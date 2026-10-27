@@ -1,0 +1,21 @@
+{
+  "name": "@haggle/sim",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/main.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@haggle/agents": "workspace:*",
+    "@haggle/engine": "workspace:*",
+    "@haggle/scenarios": "workspace:*",
+    "@haggle/schema": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:"
+  }
+}

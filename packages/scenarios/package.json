@@ -1,0 +1,21 @@
+{
+  "name": "@haggle/scenarios",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@haggle/schema": "workspace:*"
+  },
+  "devDependencies": {
+    "@haggle/engine": "workspace:*",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}
