@@ -10,7 +10,8 @@
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
     "check": "turbo run typecheck test",
-    "sim": "pnpm --filter @haggle/sim start"
+    "sim": "pnpm --filter @haggle/sim start",
+    "match": "pnpm --filter @haggle/sim match"
   },
   "devDependencies": {
     "turbo": "catalog:",

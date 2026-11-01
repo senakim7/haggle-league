@@ -30,7 +30,10 @@ docs/
 pnpm install
 pnpm check          # 전체 타입 검사 + 테스트 (turbo)
 pnpm sim --matches 100 --seed 1 --out out/sim.jsonl
+pnpm match --seller llm --buyer conceder --out out/match.json   # LLM 한 경기 (.env에 무료 키 필요)
 ```
+
+`pnpm match`의 하루 호출 수는 `.quota/usage.json`에 쌓인다. 지우면 자체 차단기가 초기화되므로 지우지 않는다.
 
 엔진 속성 테스트의 경기 수는 `FC_MATCH_RUNS`로 바꾼다(기본 30,000경기, 행동 약 11만 개).
 

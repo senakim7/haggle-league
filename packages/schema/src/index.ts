@@ -21,6 +21,21 @@ export const TurnOutput = z.object({
 });
 export type TurnOutput = z.infer<typeof TurnOutput>;
 
+export const STRATEGY_PROMPT_MAX_LENGTH = 1000;
+
+// 편집기의 성향 슬라이더. 0~100 정수로 저장하고, 프롬프트에는 말로 풀어 넣는다.
+export const StrategyParams = z.object({
+  openingAggression: z.number().int().min(0).max(100), // 첫 제시가를 시세에서 얼마나 멀리 부를지
+  concessionSpeed: z.number().int().min(0).max(100), // 얼마나 빨리 양보할지
+});
+export type StrategyParams = z.infer<typeof StrategyParams>;
+
+export const StrategyCard = z.object({
+  prompt: z.string().max(STRATEGY_PROMPT_MAX_LENGTH),
+  params: StrategyParams,
+});
+export type StrategyCard = z.infer<typeof StrategyCard>;
+
 // 한도는 시세 범위에 대한 비율로 정한다. 0은 시세 하단, 1은 시세 상단이다.
 export const LimitRule = z
   .object({

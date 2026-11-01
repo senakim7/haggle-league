@@ -11,8 +11,12 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@ai-sdk/google": "catalog:",
+    "@ai-sdk/mistral": "catalog:",
     "@haggle/engine": "workspace:*",
-    "@haggle/schema": "workspace:*"
+    "@haggle/schema": "workspace:*",
+    "ai": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@haggle/scenarios": "workspace:*",

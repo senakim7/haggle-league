@@ -3,7 +3,10 @@ packages:
   - packages/*
 
 catalog:
+  "@ai-sdk/google": ^3.0.140
+  "@ai-sdk/mistral": ^3.0.78
   "@types/node": ^24.19.2
+  ai: ^6.0.320
   fast-check: ^4.3.0
   tsx: ^4.20.0
   turbo: ^2.5.0
