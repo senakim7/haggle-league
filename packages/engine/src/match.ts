@@ -86,7 +86,8 @@ export async function runMatch(input: MatchInput): Promise<MatchResult> {
     for (let attempt = 0; attempt <= config.maxRetriesPerTurn; attempt++) {
       const view: AgentView = {
         role: side,
-        scenario: structuredClone(publicScenario),
+        // 런타임 전역(structuredClone)에 기대지 않고 직접 복사한다. 엔진은 Node 타입 없이도 검사되어야 한다.
+        scenario: { ...publicScenario, itemFacts: [...publicScenario.itemFacts] },
         myLimit,
         turnNo,
         maxTurns: config.maxTurns,
