@@ -1,0 +1,19 @@
+# 로컬 개발용 Postgres와 Redis. 운영은 Neon(Postgres)과 Upstash(Redis) 무료 플랜을 쓴다.
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: haggle
+      POSTGRES_PASSWORD: haggle
+      POSTGRES_DB: haggle
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "127.0.0.1:6379:6379"
+
+volumes:
+  pgdata:

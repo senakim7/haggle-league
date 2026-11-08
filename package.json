@@ -11,7 +11,12 @@
     "typecheck": "turbo run typecheck",
     "check": "turbo run typecheck test",
     "sim": "pnpm --filter @haggle/sim start",
-    "match": "pnpm --filter @haggle/sim match"
+    "match": "pnpm --filter @haggle/sim match",
+    "db:generate": "pnpm --filter @haggle/db generate",
+    "db:migrate": "pnpm --filter @haggle/db migrate",
+    "db:seed": "pnpm --filter @haggle/db seed",
+    "api": "pnpm --filter @haggle/api dev",
+    "worker": "pnpm --filter @haggle/worker dev"
   },
   "devDependencies": {
     "turbo": "catalog:",

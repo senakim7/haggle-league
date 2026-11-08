@@ -36,6 +36,14 @@ export const StrategyCard = z.object({
 });
 export type StrategyCard = z.infer<typeof StrategyCard>;
 
+// API가 경기를 큐에 넣고 워커가 꺼낸다. 작업 ID를 경기 ID로 써서 같은 경기가 두 번 들어가지 않게 한다.
+export const MATCH_QUEUE = "matches";
+export const MatchJob = z.object({ matchId: z.uuid() });
+export type MatchJob = z.infer<typeof MatchJob>;
+
+export const HouseBotKind = z.enum(["holdout", "conceder", "mirror"]);
+export type HouseBotKind = z.infer<typeof HouseBotKind>;
+
 // 한도는 시세 범위에 대한 비율로 정한다. 0은 시세 하단, 1은 시세 상단이다.
 export const LimitRule = z
   .object({

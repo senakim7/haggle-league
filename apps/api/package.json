@@ -1,0 +1,35 @@
+{
+  "name": "@haggle/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/app.ts"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@haggle/db": "workspace:*",
+    "@haggle/engine": "workspace:*",
+    "@haggle/schema": "workspace:*",
+    "@hono/node-server": "catalog:",
+    "better-auth": "catalog:",
+    "bullmq": "catalog:",
+    "drizzle-orm": "catalog:",
+    "hono": "catalog:",
+    "ioredis": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "catalog:",
+    "@haggle/scenarios": "workspace:*",
+    "@types/node": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

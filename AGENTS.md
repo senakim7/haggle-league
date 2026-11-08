@@ -9,20 +9,20 @@ apps/
   sim/          하우스 봇 리그 시뮬레이터 CLI (pnpm sim)
   web/          (4주차) Next.js
   mobile/       (7주차) Expo
-  api/          (3주차) Hono
-  worker/       (3주차) BullMQ
+  api/          Hono: Better Auth 로그인, 에이전트·버전 CRUD, 연습 경기 요청, 경기 조회
+  worker/       BullMQ: 큐에서 경기를 꺼내 실행하고 턴·결과를 저장
 packages/
   schema/       zod 스키마와 공유 타입. 다른 패키지에 의존하지 않는다
   engine/       규칙·점수·한도 추출·경기 진행. LLM과 I/O 없이 순수 TS
-  agents/       하우스 봇, (2주차) 프롬프트 조립과 LLM 호출
+  agents/       하우스 봇, 프롬프트 조립과 LLM 호출, 무료 모델 허용 목록과 쿼터 차단기
   scenarios/    개발용 시나리오 10개. 시즌용 비공개 풀은 레포에 넣지 않는다
-  db/           (3주차) Drizzle 스키마와 마이그레이션
+  db/           Drizzle 스키마와 마이그레이션. 테스트는 PGlite(메모리 Postgres)로 Docker 없이 돈다
 docs/
   ai-log/       AI에게 맡긴 일, AI가 틀린 사례, 테스트로 잡은 과정
   case-studies/ 직무별 케이스 스터디
 ```
 
-의존 방향: `schema ← engine ← agents ← apps`. 거꾸로 import하지 않는다. `engine`은 `agents`를 모른다.
+의존 방향: `schema ← engine ← agents ← apps`, `schema ← db ← apps`. 거꾸로 import하지 않는다. `engine`은 `agents`와 `db`를 모른다.
 
 ## 명령
 
@@ -32,6 +32,18 @@ pnpm check          # 전체 타입 검사 + 테스트 (turbo)
 pnpm sim --matches 100 --seed 1 --out out/sim.jsonl
 pnpm match --seller llm --buyer conceder --out out/match.json   # LLM 한 경기 (.env에 무료 키 필요)
 ```
+
+로컬에서 API와 워커를 띄우려면 `.env.example`을 `.env`로 복사해 채운 뒤:
+
+```bash
+docker compose up -d   # Postgres, Redis
+pnpm db:migrate
+pnpm db:seed           # 개발용 시나리오. 운영 DB에는 넣지 않는다
+pnpm api               # http://localhost:8787
+pnpm worker
+```
+
+스키마를 바꾸면 `pnpm db:generate`로 마이그레이션을 만들고 함께 커밋한다.
 
 `pnpm match`의 하루 호출 수는 `.quota/usage.json`에 쌓인다. 지우면 자체 차단기가 초기화되므로 지우지 않는다.
 
@@ -56,6 +68,10 @@ pnpm match --seller llm --buyer conceder --out out/match.json   # LLM 한 경기
 5. **두 한도는 서로 독립으로 뽑는다.** 한쪽에서 다른 쪽을 계산하면 상대 한도를 추론할 수 있다.
 6. **시즌 시나리오는 비공개.** 레포에 들어간 시나리오는 공개된 것으로 본다.
 7. **LLM은 무료 티어만 쓴다.** 요금이 나올 수 있는 경로를 코드와 계정 양쪽에서 막는다. 아래 "LLM 무료 티어 원칙"을 따른다.
+8. **한도와 속마음은 경기가 끝나기 전 어떤 API 응답에도 없다.** 전략 프롬프트는 주인 전용 경로에서만 나간다.
+9. **남의 리소스는 404로 답한다.** 모든 API가 요청자와 소유자를 대조하고, 존재 여부도 알려 주지 않는다. `api.test.ts`에 다른 사용자로 요청하는 테스트가 있다.
+10. **경기 반영은 한 번만.** 상태는 조건부 UPDATE로만 `queued → running → done/void`로 바뀌고, 턴은 `(match_id, turn_no)` 유니크로 막는다. 도중에 죽은 경기는 이어 붙이지 않고 무효로 한다.
+11. **쓰기 요청은 우리 출처와 JSON만 받는다.** 다른 Origin의 쓰기와 `application/json`이 아닌 본문은 거부한다. `AUTH_DEV_LOGIN`은 운영에서 켜면 API가 시작되지 않는다.
 
 ## LLM 무료 티어 원칙
 
